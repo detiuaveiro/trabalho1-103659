@@ -146,13 +146,11 @@ static int check(int condition, const char* failmsg) {
 void ImageInit(void) { ///
   InstrCalibrate();
   InstrName[0] = "pixmem";  // InstrCount[0] will count pixel array acesses
-  // Name other counters here...
   
 }
 
 // Macros to simplify accessing instrumentation counters:
 #define PIXMEM InstrCount[0]
-#define COMPARE_COUNT InstrCount[1]
 // Add more macros here...
 
 // TIP: Search for PIXMEM or InstrCount to see where it is incremented!
@@ -641,6 +639,7 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
   
   for (int y = 0; y < img2->height; y++){
     for (int x = 0; x < img2->width; x++){
+
       // verifica se img2 é subimage de img1 na posiçao correspondente
       if (ImageMatchSubImage(img1,x,y,img2)){
         // atualiza px e py caso seja subimage
@@ -707,5 +706,6 @@ void ImageBlur(Image img, int dx, int dy) { ///
   
   // destruiçao da imagem temporaria para libertar memoria
   ImageDestroy(&blurredImg);
+
 }
 
