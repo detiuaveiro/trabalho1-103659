@@ -146,11 +146,14 @@ static int check(int condition, const char* failmsg) {
 void ImageInit(void) { ///
   InstrCalibrate();
   InstrName[0] = "pixmem";  // InstrCount[0] will count pixel array acesses
-  
+  InstrName[1] = "adds";
+  InstrName[2] = "operations";
 }
 
 // Macros to simplify accessing instrumentation counters:
 #define PIXMEM InstrCount[0]
+#define COMPARE_COUNT InstrCount[1]
+#define OPERATIONS_COUNT InstrCount[2]
 // Add more macros here...
 
 // TIP: Search for PIXMEM or InstrCount to see where it is incremented!
@@ -640,6 +643,8 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
   for (int y = 0; y < img2->height; y++){
     for (int x = 0; x < img2->width; x++){
 
+      InstrCount[1]++; // incrementa o contador de comparaçoes
+
       // verifica se img2 é subimage de img1 na posiçao correspondente
       if (ImageMatchSubImage(img1,x,y,img2)){
         // atualiza px e py caso seja subimage
@@ -685,6 +690,7 @@ void ImageBlur(Image img, int dx, int dy) { ///
           if (ImageValidPos(img, nx, ny)){
             sum += ImageGetPixel(img, nx, ny);
             count++;
+            InstrCount[2]++; // incrementa o contador de operaçoes
           }
         }
       }
@@ -693,6 +699,7 @@ void ImageBlur(Image img, int dx, int dy) { ///
       if (count > 0){
         uint8 average = sum/count;
         ImageSetPixel(blurredImg, x, y, average);
+        InstrCount[2]++; // incrementa o contador de operaçoes
       }
     }
   }
@@ -701,6 +708,7 @@ void ImageBlur(Image img, int dx, int dy) { ///
   for (int y = 0; y < img->height; y++){
     for (int x = 0; x < img->width; x++){
       ImageSetPixel(img, x, y, ImageGetPixel(blurredImg, x, y));
+      InstrCount[2]++; // incrementa o contador de operaçoes
     }
   }
   
