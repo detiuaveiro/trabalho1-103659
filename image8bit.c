@@ -622,6 +622,8 @@ int ImageMatchSubImage(Image img1, int x, int y, Image img2) { ///
 
       uint8 pixelVal2 = ImageGetPixel(img2, nx, ny);
 
+      InstrCount[1]++; // incrementa o contador de comparaçoes
+      
       // compara o valor dos pixeis
       if (pixelVal1 != pixelVal2){
         return 0;
